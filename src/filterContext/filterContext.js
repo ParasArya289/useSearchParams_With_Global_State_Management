@@ -5,7 +5,17 @@ export const filterContext = createContext();
 
 export const FilterContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(fitlerReducer, initFilterState);
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    dispatch({
+      type: "INIT_FILTER",
+      payload: {
+        category: searchParams.getAll("category"),
+        sort: searchParams.getAll("sort"),
+      },
+    });
+  }, []);
 
   useEffect(() => {
     setSearchParams(state);
